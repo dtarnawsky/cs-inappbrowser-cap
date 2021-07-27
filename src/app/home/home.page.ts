@@ -29,7 +29,7 @@ export class HomePage {
 
     this.browser.on('beforeload').subscribe((event: InAppBrowserEvent) => {
       // Fires on iOS
-      // Does not fire on Android
+      // Does not fire on Android on startup of first browser load but does fire afterwards
       console.log('beforeload', event);
 
       // Callback to ensure it loads

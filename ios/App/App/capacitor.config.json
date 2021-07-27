@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.csiab",
+	"appName": "cs-iab",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

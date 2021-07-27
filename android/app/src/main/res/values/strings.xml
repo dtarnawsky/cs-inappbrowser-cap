@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">cs-iab</string>
+    <string name="title_activity_main">cs-iab</string>
+    <string name="package_name">io.ionic.csiab</string>
+    <string name="custom_url_scheme">io.ionic.csiab</string>
+</resources>

@@ -1,0 +1,7 @@
+{
+  "name": "cs-iab",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

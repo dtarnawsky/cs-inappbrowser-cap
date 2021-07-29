@@ -40,8 +40,27 @@ But, it will not fire when the target is specified:
 <a target="_system_" href="https://domain/blar.pdf">Link</a>
 ```
 
+### About _System
+When this is called:
+```typescript
+window.open(event.url, '_system', 'location=yes');
+```
+In Android this is effectively launching a download in the Android operating systems browser of choice. This may open the PDF. It also may not depending on the flavor of Android and configuration.
+
+In iOS this launches iOS pdf viewer.
+
 ## Note on Android
 Outstanding problem in the chromium webview that cannot intercept POST calls fore beforeload:
 https://bugs.chromium.org/p/chromium/issues/detail?id=155250#c39
 
+## About Links
+The beforeload event will work with https links. http links are flagged as insecure on Android.
+Deep links such as mailto:// fb:/// twitter:// tel:// are not captured and result in Possible Uncaught/Unknown URI error
 
+Urls other than https could be launched in your app via `window.open(url..` but these will error with:
+`Failed to open URL [url here]: Error Domain=NSOSStatusErrorDomain Code=-10814 "(null)" UserInfo={_LSLine=229, _LSFunction=-[_LSDOpenClient openURL:options:completionHandler:]}`
+
+## About Authentication
+Launching from the app to either the inAppBrowser or system browser does not copy across any notion of cookies or authentication. It is a simple launch of a url, so if authentication is required it must be part of the url.
+
+An alternative is to have your application process urls: eg for a PDF link, have the application load the URL in an iFrame and use a PDF viewer web application, or use a component to display the PDF.

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { InAppBrowser, InAppBrowserEvent, InAppBrowserObject } from '@ionic-native/in-app-browser/ngx';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -8,10 +9,14 @@ import { InAppBrowser, InAppBrowserEvent, InAppBrowserObject } from '@ionic-nati
 })
 export class HomePage {
   private browser: InAppBrowserObject;
-  constructor(private iab: InAppBrowser) { }
+  constructor(private iab: InAppBrowser, private platform: Platform) {
+    platform.ready().then(() => {
+      this.open();
+    });
+  }
 
   public open() {
-    this.browser = this.iab.create('https://cs-links.netlify.app/', '_blank', 'location=no,beforeload=yes');    
+    this.browser = this.iab.create('https://cs-links.netlify.app/', '_blank', 'location=no,beforeload=yes');
 
     this.browser.on('loadstop').subscribe((event: InAppBrowserEvent) => {
       // Fires on iOS
@@ -36,6 +41,12 @@ export class HomePage {
         // We want to launch this in the system browser instead of from InAppBrowser
         console.log(`Opening ${event.url} in system browser`);
         window.open(event.url, '_system', 'location=yes');
+        return;
+      }
+
+      if (!event.url.startsWith("https://")) {
+        // Avoid urls other than https
+        console.log(`Unsupported url ${event.url}`);
         return;
       }
 

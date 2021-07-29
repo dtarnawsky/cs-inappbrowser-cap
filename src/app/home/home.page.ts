@@ -11,7 +11,7 @@ export class HomePage {
   constructor(private iab: InAppBrowser) { }
 
   public open() {
-    this.browser = this.iab.create('https://ionic.io', '_blank', 'location=no,beforeload=yes');    
+    this.browser = this.iab.create('https://cs-links.netlify.app/', '_blank', 'location=no,beforeload=yes');    
 
     this.browser.on('loadstop').subscribe((event: InAppBrowserEvent) => {
       // Fires on iOS
@@ -30,7 +30,14 @@ export class HomePage {
     this.browser.on('beforeload').subscribe((event: InAppBrowserEvent) => {
       // Fires on iOS
       // Does not fire on Android on startup of first browser load but does fire afterwards
-      console.log('beforeload', event);
+      console.log(`beforeload ${event.url}`);
+
+      if (event.url.toLowerCase().endsWith(".pdf")) {
+        // We want to launch this in the system browser instead of from InAppBrowser
+        console.log(`Opening ${event.url} in system browser`);
+        window.open(event.url, '_system', 'location=yes');
+        return;
+      }
 
       // Callback to ensure it loads
       this.browser._loadAfterBeforeload(event.url);

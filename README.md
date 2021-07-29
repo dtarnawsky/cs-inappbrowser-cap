@@ -1,5 +1,5 @@
-# Sample Project
-Uses Capacitor 3 with Cordova In App Browser and shows how to use the beforeload event.
+# InAppBrowser Sample
+Uses Capacitor 3 with Cordova In App Browser and shows how to use the beforeload event. When links to PDF files are clicked the app will launch the system web browser to display the PDF.
 
 ## About BeforeLoad
 The `beforeload` event is configured by specifying `beforeload=yes` in the options of `InAppBrowser`:
@@ -50,7 +50,7 @@ In Android this is effectively launching a download in the Android operating sys
 In iOS this launches iOS pdf viewer.
 
 ## Note on Android
-Outstanding problem in the chromium webview that cannot intercept POST calls fore beforeload:
+There is an outstanding problem in the chromium webview that cannot intercept POST calls hence beforeload is not fired:
 https://bugs.chromium.org/p/chromium/issues/detail?id=155250#c39
 
 ## About Links

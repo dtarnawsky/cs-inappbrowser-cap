@@ -36,6 +36,7 @@ export class HomePage {
       // Fires on iOS
       // Does not fire on Android on startup of first browser load but does fire afterwards
       console.log(`beforeload ${event.url}`);
+      console.log(JSON.stringify(event));
 
       if (event.url.toLowerCase().endsWith(".pdf")) {
         // We want to launch this in the system browser instead of from InAppBrowser

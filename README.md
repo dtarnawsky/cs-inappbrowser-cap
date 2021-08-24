@@ -64,3 +64,33 @@ Urls other than https could be launched in your app via `window.open(url..` but 
 Launching from the app to either the inAppBrowser or system browser does not copy across any notion of cookies or authentication. It is a simple launch of a url, so if authentication is required it must be part of the url.
 
 An alternative is to have your application process urls: eg for a PDF link, have the application load the URL in an iFrame and use a PDF viewer web application, or use a component to display the PDF.
+
+
+## Testing PR 755
+Android - Go to components then support page
+
+### Before PR 755
+onscript loading complete
+main.d605ccb3bb52d6756457.js:1 Ionic Native: deviceready event fired after 231 ms
+3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://cs-links.netlify.app/"}
+VM3:228 native App.addListener (#37842630)
+3952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://cs-links.netlify.app/tabs/tab1"}
+3952.0790146f43b282a52906.js:1 beforeload {"type":"beforeload","url":"https://ionicframework.com/docs/components","method":"GET"}
+3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://ionicframework.com/docs/components"}
+3952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://ionicframework.com/docs/components"}
+3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://ionic.io/support"}
+33952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://ionic.io/support"}
+
+### After PR 755
+onscript loading complete
+main.1fe94490a69a0d9f1e8c.js:1 Ionic Native: deviceready event fired after 662 ms
+VM3:231 native App.addListener (#84396432)
+3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://cs-links.netlify.app/"}
+3952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://cs-links.netlify.app/tabs/tab1"}
+3952.0790146f43b282a52906.js:1 beforeload {"type":"beforeload","url":"https://ionicframework.com/docs/components","method":"GET"}
+3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://ionicframework.com/docs/components"}
+3952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://ionicframework.com/docs/components"}
+3952.0790146f43b282a52906.js:1 beforeload {"type":"beforeload","url":"https://ionic.io/support","method":"GET"}
+3952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://ionic.io/support"}
+3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://ionic.io/support"}
+33952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://ionic.io/support"}

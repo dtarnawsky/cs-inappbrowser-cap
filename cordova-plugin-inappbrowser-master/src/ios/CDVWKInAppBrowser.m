@@ -475,6 +475,22 @@ static CDVWKInAppBrowser* instance = nil;
     [self injectDeferredObject:[command argumentAtIndex:0] withWrapper:jsWrapper];
 }
 
+- (CDVPluginResult*)setCookie:(CDVInvokedUrlCommand*)command
+{
+    NSString *urlString = [command argumentAtIndex:0];
+    NSString *cookieString = [command argumentAtIndex:1];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSDictionary *setCookieDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   cookieString, @"Set-Cookie",
+                                   nil];
+    NSArray<NSHTTPCookie*> *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:setCookieDict forURL:url];
+    if (cookies.count == 0) {
+        return [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+    }
+    [((WKWebView*)self.webViewEngine.engineWebView).configuration.websiteDataStore.httpCookieStore setCookie:cookies[0] completionHandler:nil];
+    return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+}
+
 - (BOOL)isValidCallbackId:(NSString *)callbackId
 {
     NSError *err = nil;

@@ -334,6 +334,24 @@ public class InAppBrowser extends CordovaPlugin {
             pluginResult.setKeepCallback(true);
             this.callbackContext.sendPluginResult(pluginResult);
         }
+        else if (action.equals("setCookie")) {
+            String url = args.getString(0);
+            String cookieString = args.getString(1);
+
+            CookieManager.getInstance().setCookie(url, cookieString, new ValueCallback<Boolean>() {
+                @Override
+                public void onReceiveValue(Boolean value) {
+                    if (!value) {
+                        callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR));
+                    } else {
+                        CookieManager.getInstance().flush();
+                        callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
+                    }
+                }
+            });
+
+            return true;
+        }
         else {
             return false;
         }

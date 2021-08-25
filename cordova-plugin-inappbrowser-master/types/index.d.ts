@@ -23,6 +23,7 @@ interface InAppBrowser {
      *                 name/value pairs must be separated by a comma. Feature names are case insensitive.
      */
     open(url: string, target?: string, options?: string): InAppBrowser;
+    setCookie(url: string, cookieString: string, callback?: any, error?: any): void;
 
     onloadstart(type: Event): void;
     onloadstop(type: InAppBrowserEvent): void;

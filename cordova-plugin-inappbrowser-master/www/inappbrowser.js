@@ -89,31 +89,38 @@
             } else {
                 throw new Error('insertCSS requires exactly one of code or file to be specified');
             }
-        }
+        },
+
     };
 
-    module.exports = function (strUrl, strWindowName, strWindowFeatures, callbacks) {
-        // Don't catch calls that write to existing frames (e.g. named iframes).
-        if (window.frames && window.frames[strWindowName]) {
-            var origOpenFunc = modulemapper.getOriginalSymbol(window, 'open');
-            return origOpenFunc.apply(window, arguments);
+    module.exports = {
+        open: function (strUrl, strWindowName, strWindowFeatures, callbacks) {
+            // Don't catch calls that write to existing frames (e.g. named iframes).
+            if (window.frames && window.frames[strWindowName]) {
+              var origOpenFunc = modulemapper.getOriginalSymbol(window, 'open');
+              return origOpenFunc.apply(window, arguments);
+            }
+
+            strUrl = urlutil.makeAbsolute(strUrl);
+            var iab = new InAppBrowser();
+
+            callbacks = callbacks || {};
+            for (var callbackName in callbacks) {
+              iab.addEventListener(callbackName, callbacks[callbackName]);
+            }
+
+            var cb = function (eventname) {
+              iab._eventHandler(eventname);
+            };
+
+            strWindowFeatures = strWindowFeatures || '';
+
+            exec(cb, cb, 'InAppBrowser', 'open', [strUrl, strWindowName, strWindowFeatures]);
+            return iab;
+        },
+
+        setCookie: function (url, cookieString, success, error) {
+            exec(success, error, 'InAppBrowser', 'setCookie', [url, cookieString]);
         }
-
-        strUrl = urlutil.makeAbsolute(strUrl);
-        var iab = new InAppBrowser();
-
-        callbacks = callbacks || {};
-        for (var callbackName in callbacks) {
-            iab.addEventListener(callbackName, callbacks[callbackName]);
-        }
-
-        var cb = function (eventname) {
-            iab._eventHandler(eventname);
-        };
-
-        strWindowFeatures = strWindowFeatures || '';
-
-        exec(cb, cb, 'InAppBrowser', 'open', [strUrl, strWindowName, strWindowFeatures]);
-        return iab;
     };
 })();

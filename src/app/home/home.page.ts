@@ -22,6 +22,12 @@ export class HomePage {
       // Fires on iOS
       // Fires on Android
       console.log(`loadstop ${JSON.stringify(event)}`);
+      try 
+      {
+      this.browser.executeScript({code: 'window.addEventListener("hashchange", function() { browser.runtime.sendMessage({url: location.href}); },false);'});
+      } catch (err) {
+        console.log('unable to execute');
+      }
     });
     this.browser.on('loadstart').subscribe((event: InAppBrowserEvent) => {
       // Fires on iOS
@@ -35,7 +41,7 @@ export class HomePage {
     this.browser.on('beforeload').subscribe((event: InAppBrowserEvent) => {
       // Fires on iOS
       // Does not fire on Android on startup of first browser load but does fire afterwards
-      console.log(`beforeload ${JSON.stringify(event)}`);      
+      console.log(`beforeload ${JSON.stringify(event)}`);
 
       if (event.url.toLowerCase().endsWith(".pdf")) {
         // We want to launch this in the system browser instead of from InAppBrowser

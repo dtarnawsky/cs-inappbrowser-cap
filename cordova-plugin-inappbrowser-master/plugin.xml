@@ -38,7 +38,7 @@
     <!-- android -->
     <platform name="android">
         <js-module src="www/inappbrowser.js" name="inappbrowser">
-            <clobbers target="cordova.InAppBrowser.open" />
+            <clobbers target="cordova.InAppBrowser" />
         </js-module>
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="InAppBrowser">
@@ -71,7 +71,7 @@
     <!-- ios -->
     <platform name="ios">
         <js-module src="www/inappbrowser.js" name="inappbrowser">
-            <clobbers target="cordova.InAppBrowser.open" />
+            <clobbers target="cordova.InAppBrowser" />
         </js-module>
         <config-file target="config.xml" parent="/*">
             <feature name="InAppBrowser">

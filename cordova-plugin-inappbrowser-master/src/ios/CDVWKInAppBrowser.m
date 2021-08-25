@@ -487,7 +487,10 @@ static CDVWKInAppBrowser* instance = nil;
     if (cookies.count == 0) {
         return [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }
-    [((WKWebView*)self.webViewEngine.engineWebView).configuration.websiteDataStore.httpCookieStore setCookie:cookies[0] completionHandler:nil];
+        
+    WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
+    [dataStore.httpCookieStore setCookie:cookies[0] completionHandler:nil];    
+    // [((WKWebView*)self.webViewEngine.engineWebView).configuration.websiteDataStore.httpCookieStore setCookie:cookies[0] completionHandler:nil];
     return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 }
 

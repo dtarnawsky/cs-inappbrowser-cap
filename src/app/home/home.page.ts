@@ -19,21 +19,20 @@ export class HomePage {
     this.browser = this.iab.create(url, '_blank', 'location=no,beforeload=yes');
 
     this.browser.on('loadstop').subscribe((event: InAppBrowserEvent) => {
-      // Fires on iOS
-      // Fires on Android
       console.log(`loadstop ${JSON.stringify(event)}`);
-      try 
-      {
-      this.browser.executeScript({code: 'window.addEventListener("hashchange", function() { browser.runtime.sendMessage({url: location.href}); },false);'});
-      } catch (err) {
-        console.log('unable to execute');
-      }
+
+      // This injects code on the page to wait for changes in the browser location and sends a message with the url to the application
+      this.browser.executeScript({
+        code: 'setInterval(() => { if (window.lastHref != location.href) { let data = JSON.stringify({href: location.href}); window.lastHref = location.href; try { webkit.messageHandlers.cordova_iab.postMessage(data); } catch (err) { console.error(err); } } },100);'
+      });
     });
+
     this.browser.on('loadstart').subscribe((event: InAppBrowserEvent) => {
       // Fires on iOS
       // Fires on Android
       console.log(`loadstart ${JSON.stringify(event)}`);
     });
+
     this.browser.on('loaderror').subscribe((event: InAppBrowserEvent) => {
       console.log(`loaderror ${JSON.stringify(event)}`);
     });
@@ -59,8 +58,11 @@ export class HomePage {
       // Callback to ensure it loads
       this.browser._loadAfterBeforeload(event.url);
     });
+
     this.browser.on('message').subscribe((event: InAppBrowserEvent) => {
-      console.log(`message ${JSON.stringify(event)}`);
+
+      // This will output the object in event.data. You could reference event.data.href
+      console.log(`message`, event.data);
     });
   }
 }

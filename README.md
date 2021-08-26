@@ -67,30 +67,9 @@ An alternative is to have your application process urls: eg for a PDF link, have
 
 
 ## Testing PR 755
-Android - Go to components then support page
+This pull request has been merged into the plugin and ensure that "beforeload" event is triggered every time.
 
-### Before PR 755
-onscript loading complete
-main.d605ccb3bb52d6756457.js:1 Ionic Native: deviceready event fired after 231 ms
-3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://cs-links.netlify.app/"}
-VM3:228 native App.addListener (#37842630)
-3952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://cs-links.netlify.app/tabs/tab1"}
-3952.0790146f43b282a52906.js:1 beforeload {"type":"beforeload","url":"https://ionicframework.com/docs/components","method":"GET"}
-3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://ionicframework.com/docs/components"}
-3952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://ionicframework.com/docs/components"}
-3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://ionic.io/support"}
-33952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://ionic.io/support"}
+## Tracking Page Changes
+SPA applications do not reload the page when their router changes the page, so "beforeload" etc will not fire. Most SPA applications will change the url of the browser and we can track that using a `setInterval` function and comparing `location.href` to last time. If it has changed then we can fire the `postMessage` function to send the message back to our app. Take a look at `home.page.ts` for an example.
 
-### After PR 755
-onscript loading complete
-main.1fe94490a69a0d9f1e8c.js:1 Ionic Native: deviceready event fired after 662 ms
-VM3:231 native App.addListener (#84396432)
-3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://cs-links.netlify.app/"}
-3952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://cs-links.netlify.app/tabs/tab1"}
-3952.0790146f43b282a52906.js:1 beforeload {"type":"beforeload","url":"https://ionicframework.com/docs/components","method":"GET"}
-3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://ionicframework.com/docs/components"}
-3952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://ionicframework.com/docs/components"}
-3952.0790146f43b282a52906.js:1 beforeload {"type":"beforeload","url":"https://ionic.io/support","method":"GET"}
-3952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://ionic.io/support"}
-3952.0790146f43b282a52906.js:1 loadstart {"type":"loadstart","url":"https://ionic.io/support"}
-33952.0790146f43b282a52906.js:1 loadstop {"type":"loadstop","url":"https://ionic.io/support"}
+Note: There are [`hashChange`](https://developer.mozilla.org/en-US/docs/Web/API/Window/hashchange_event) events that can detect if the hash in a url changes and the [`popState`](https://developer.mozilla.org/en-US/docs/Web/API/Window/popstate_event) event will detect if the browser history changes but these wont fire on a SPA application that doesnt use a hash location strategy or alter the browser history.

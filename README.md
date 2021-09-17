@@ -72,9 +72,9 @@ Launching from the app to either the inAppBrowser or system browser does not cop
 An alternative is to have your application process urls: eg for a PDF link, have the application load the URL in an iFrame and use a PDF viewer web application, or use a component to display the PDF as in the sample.
 
 ## Plugin Bugs
-There is a pull request ([PR 755](https://github.com/apache/cordova-plugin-inappbrowser/pull/755)) has not been merged into the official plugin (as of 9/17/2021) but it has been included in the local modified plugin in this repo. It ensures that "beforeload" event is triggered every time.
+There is a pull request ([PR 755](https://github.com/apache/cordova-plugin-inappbrowser/pull/755)) that has not been merged into the official plugin (as of 9/17/2021) but it has been included in the local copy of the plugin in this repo. It ensures that `beforeload` event is triggered every time.
 
 ## Tracking Page Changes
-SPA applications do not reload the page when their router changes the page, so "beforeload" etc will not fire. Most SPA applications will change the url of the browser and we can track that using a `setInterval` function and comparing `location.href` to last time. If it has changed then we can fire the `postMessage` function to send the message back to our app. Take a look at `home.page.ts` for an example.
+SPA applications do not reload the page when their router changes the page, so `beforeload` etc will not fire. Most SPA applications will change the url of the browser and we can track that using a `setInterval` function and comparing `location.href` to last time. If it has changed then we can fire the `postMessage` function to send the message back to our app. Take a look at `home.page.ts` for an example.
 
 Note: There are [`hashChange`](https://developer.mozilla.org/en-US/docs/Web/API/Window/hashchange_event) events that can detect if the hash in a url changes and the [`popState`](https://developer.mozilla.org/en-US/docs/Web/API/Window/popstate_event) event will detect if the browser history changes but these wont fire on a SPA application that doesnt use a hash location strategy or alter the browser history.

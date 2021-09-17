@@ -1,5 +1,11 @@
 # InAppBrowser Sample
-Uses Capacitor 3 with Cordova In App Browser and shows how to use the beforeload event. When links to PDF files are clicked the app will launch the system web browser to display the PDF.
+Uses Capacitor 3 with Cordova In App Browser and shows:
+
+1. How to use the `beforeload` event to selectively choose what to do when navigating to a URL (search for `[SystemBrowser]`)
+2. When a PDF file is clicked the PDF is viewed with cordova-document-viewer and can be printed (see `download` method)
+3. Demonstrates intercepting route changes on a SPA application that is displaying in the in-app browser (see `executeScript` method)
+4. Demonstrates how to modify dom elements on the displayed page in in-app browser (see `fixLinks` method)
+5. Has a slightly modified version of the cordova-plugin-inappbrowser which is included in the repo which fixes an bug with the `beforeload` event
 
 ## About BeforeLoad
 The `beforeload` event is configured by specifying `beforeload=yes` in the options of `InAppBrowser`:
@@ -40,22 +46,22 @@ But, it will not fire when the target is specified:
 <a target="_system_" href="https://domain/blar.pdf">Link</a>
 ```
 
+See the `fixLinks` method which can be used with `executescript` to avoid this problem on Android.
+
 ### About _System
 When this is called:
 ```typescript
 window.open(event.url, '_system', 'location=yes');
 ```
-In Android this is effectively launching a download in the Android operating systems browser of choice. This may open the PDF. It also may not depending on the flavor of Android and configuration.
-
-In iOS this launches iOS pdf viewer.
+In Android this is effectively launching a download in the Android operating systems browser of choice. This may open the PDF if the flavor of Android has a PDF viewer. On iOS it will display the built in PDF viewer. This is why an embedded PDF Viewer sample is included.
 
 ## Note on Android
 There is an outstanding problem in the chromium webview that cannot intercept POST calls hence beforeload is not fired:
 https://bugs.chromium.org/p/chromium/issues/detail?id=155250#c39
 
 ## About Links
-The beforeload event will work with https links. http links are flagged as insecure on Android.
-Deep links such as mailto:// fb:/// twitter:// tel:// are not captured and result in Possible Uncaught/Unknown URI error
+The `beforeload` event will work with https links. http links are flagged as insecure on Android.
+Deep links such as mailto:// fb:/// twitter:// tel:// are not captured and result in `Possible Uncaught/Unknown URI` error
 
 Urls other than https could be launched in your app via `window.open(url..` but these will error with:
 `Failed to open URL [url here]: Error Domain=NSOSStatusErrorDomain Code=-10814 "(null)" UserInfo={_LSLine=229, _LSFunction=-[_LSDOpenClient openURL:options:completionHandler:]}`
@@ -63,11 +69,10 @@ Urls other than https could be launched in your app via `window.open(url..` but 
 ## About Authentication
 Launching from the app to either the inAppBrowser or system browser does not copy across any notion of cookies or authentication. It is a simple launch of a url, so if authentication is required it must be part of the url.
 
-An alternative is to have your application process urls: eg for a PDF link, have the application load the URL in an iFrame and use a PDF viewer web application, or use a component to display the PDF.
+An alternative is to have your application process urls: eg for a PDF link, have the application load the URL in an iFrame and use a PDF viewer web application, or use a component to display the PDF as in the sample.
 
-
-## Testing PR 755
-This pull request has been merged into the plugin and ensure that "beforeload" event is triggered every time.
+## Plugin Bugs
+There is a pull request ([PR 755](https://github.com/apache/cordova-plugin-inappbrowser/pull/755)) has not been merged into the official plugin (as of 9/17/2021) but it has been included in the local modified plugin in this repo. It ensures that "beforeload" event is triggered every time.
 
 ## Tracking Page Changes
 SPA applications do not reload the page when their router changes the page, so "beforeload" etc will not fire. Most SPA applications will change the url of the browser and we can track that using a `setInterval` function and comparing `location.href` to last time. If it has changed then we can fire the `postMessage` function to send the message back to our app. Take a look at `home.page.ts` for an example.

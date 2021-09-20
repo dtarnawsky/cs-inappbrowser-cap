@@ -74,6 +74,8 @@ An alternative is to have your application process urls: eg for a PDF link, have
 ## Plugin Bugs
 There is a pull request ([PR 755](https://github.com/apache/cordova-plugin-inappbrowser/pull/755)) that has not been merged into the official plugin (as of 9/17/2021) but it has been included in the local copy of the plugin in this repo. It ensures that `beforeload` event is triggered every time.
 
+There is a bug in iOS where the view will not rotate and display in landscape mode. This has been fixed in this local copy of the plugin. Details about the fix are [here](https://github.com/apache/cordova-plugin-inappbrowser/issues/773).
+
 ## Tracking Page Changes
 SPA applications do not reload the page when their router changes the page, so `beforeload` etc will not fire. Most SPA applications will change the url of the browser and we can track that using a `setInterval` function and comparing `location.href` to last time. If it has changed then we can fire the `postMessage` function to send the message back to our app. Take a look at `home.page.ts` for an example.
 

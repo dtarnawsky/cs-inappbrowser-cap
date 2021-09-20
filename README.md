@@ -71,6 +71,13 @@ Launching from the app to either the inAppBrowser or system browser does not cop
 
 An alternative is to have your application process urls: eg for a PDF link, have the application load the URL in an iFrame and use a PDF viewer web application, or use a component to display the PDF as in the sample.
 
+## SetCookie
+The plugin contains a new API called SetCookie which allows you to programmatically set a cookie in the in-app browsers current page.
+
+```Typescript
+setCookie(url: string, cookieString: string, callback?: any, error?: any): void
+```
+
 ## Plugin Bugs
 There is a pull request ([PR 755](https://github.com/apache/cordova-plugin-inappbrowser/pull/755)) that has not been merged into the official plugin (as of 9/17/2021) but it has been included in the local copy of the plugin in this repo. It ensures that `beforeload` event is triggered every time.
 

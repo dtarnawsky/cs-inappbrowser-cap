@@ -86,7 +86,7 @@ export class BrowserService {
     const entry = await fileTransfer.download(url, path + filename);
     const localUrl = entry.toURL();
     console.log('PDF downloaded as ' + localUrl);
-    this.document.viewDocument(localUrl, 'application/pdf', { print: { enabled: true } }, () => { }, () => {
+    this.document.viewDocument(localUrl, 'application/pdf', { print: { enabled: true }, openWith: { enabled: true } }, () => { }, () => {
       this.file.removeFile(path, filename);
       this.show();
     });

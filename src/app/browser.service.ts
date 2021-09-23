@@ -82,8 +82,10 @@ export class BrowserService {
 
   // This is an example of setting cookies
   setCookies() {
-    cordova.InAppBrowser.setCookie('https://cs-links.netlify.app', 'stuff=things');
-    console.log(`Cookie was set`);
+    for (let i = 0; i < 10; i++) {
+      cordova.InAppBrowser.setCookie('https://cs-links.netlify.app', `stuff${i}=things${i}`);
+    }
+    console.log(`Cookies were set`);
   }
 
   public show() {

@@ -488,10 +488,16 @@ static CDVWKInAppBrowser* instance = nil;
     if (cookies.count == 0) {
         return [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
     }
-        
+
     WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
-    [dataStore.httpCookieStore setCookie:cookies[0] completionHandler:nil];    
-    // [((WKWebView*)self.webViewEngine.engineWebView).configuration.websiteDataStore.httpCookieStore setCookie:cookies[0] completionHandler:nil];
+    [dataStore.httpCookieStore setCookie:cookies[0] completionHandler:nil]; 
+    WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
+    [cookieStore setCookie:cookies[0] completionHandler:^{
+        NSLog(@"Set Cookie %@", cookieString);   
+    }];
+        
+    // This line works in Cordova Only
+    //[((WKWebView*)self.webViewEngine.engineWebView).configuration.websiteDataStore.httpCookieStore setCookie:cookies[0] completionHandler:nil];
     return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
 }
 

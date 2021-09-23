@@ -5,6 +5,8 @@ import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 import { InAppBrowser, InAppBrowserEvent, InAppBrowserObject } from '@ionic-native/in-app-browser/ngx';
 import { Platform } from '@ionic/angular';
 
+declare let cordova: any;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,12 +21,16 @@ export class BrowserService {
 
   public open(url: string) {
     console.log(`open ${url}`);
+
     this.browser = this.iab.create(url, '_blank',
       {
         location: 'no',
         beforeload: 'yes',
+        zoom: 'no',
         suppressesIncrementalRendering: 'yes'
       });
+
+    this.setCookies();
 
     this.browser.on('loadstop').subscribe(async (event: InAppBrowserEvent) => {
       console.log(`loadstop ${JSON.stringify(event)}`);
@@ -47,7 +53,7 @@ export class BrowserService {
       console.log(`beforeload ${JSON.stringify(event)}`);
 
       // [SystemBrowser] We want to launch this in the system browser instead of from InAppBrowser
-      if (event.url.toLowerCase().startsWith("https://ionic")) {
+      if (event.url.toLowerCase().startsWith("https://www.google")) {
         console.log(`Opening ${event.url} in system browser`);
         window.open(event.url, '_system', 'location=yes');
         return;
@@ -72,6 +78,12 @@ export class BrowserService {
       // This will output the object in event.data. You could reference event.data.href
       console.log(`message`, event.data);
     });
+  }
+
+  // This is an example of setting cookies
+  setCookies() {
+    cordova.InAppBrowser.setCookie('https://cs-links.netlify.app', 'stuff=things');
+    console.log(`Cookie was set`);
   }
 
   public show() {

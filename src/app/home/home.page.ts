@@ -12,7 +12,7 @@ export class HomePage {
     private platform: Platform,
     private browserService: BrowserService) {
     this.platform.ready().then(() => {
-      this.browserService.open('https://cs-links.netlify.app/');
+      this.browserService.open('https://cs-links.netlify.app/');      
     });
   }
 }

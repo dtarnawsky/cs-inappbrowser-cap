@@ -202,11 +202,10 @@ static CDVWKInAppBrowser* instance = nil;
     if (self.inAppBrowserViewController == nil) {
         self.inAppBrowserViewController = [[CDVWKInAppBrowserViewController alloc] initWithBrowserOptions: browserOptions andSettings:self.commandDelegate.settings];
         self.inAppBrowserViewController.navigationDelegate = self;
-        
-        // Damian: Fixes screen orientation bug
-        //if ([self.viewController conformsToProtocol:@protocol(CDVScreenOrientationDelegate)]) {
+                
+        if ([self.viewController conformsToProtocol:@protocol(CDVScreenOrientationDelegate)]) {
             self.inAppBrowserViewController.orientationDelegate = (UIViewController <CDVScreenOrientationDelegate>*)self.viewController;
-        //}
+        }
     }
     
     [self.inAppBrowserViewController showLocationBar:browserOptions.location];
